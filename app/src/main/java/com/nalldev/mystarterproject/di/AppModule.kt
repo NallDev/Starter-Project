@@ -1,6 +1,8 @@
 package com.nalldev.mystarterproject.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.nalldev.mystarterproject.data.repository.StarterRepository
 import com.nalldev.mystarterproject.data.repository.StarterRepositoryImpl
@@ -9,6 +11,7 @@ import com.nalldev.mystarterproject.data.source.remote.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -52,5 +55,10 @@ object AppModule {
     fun provideApiService(retrofit: Retrofit) : ApiService = retrofit.create(ApiService::class.java)
 
     @Provides
-    fun provideStarterRepository(apiService: ApiService) : StarterRepository = StarterRepositoryImpl(apiService)
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext app: Context): SharedPreferences =
+        app.getSharedPreferences("session_prefs", Context.MODE_PRIVATE)
+
+    @Provides
+    fun provideStarterRepository(apiService: ApiService, sharedPreferences: SharedPreferences) : StarterRepository = StarterRepositoryImpl(apiService, sharedPreferences)
 }
