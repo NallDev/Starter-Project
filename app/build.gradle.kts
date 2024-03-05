@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation("com.github.Dimezis:BlurView:version-2.0.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
